@@ -10,7 +10,6 @@ find_package(CURL           REQUIRED)  # FIXME depends
 find_package(enet           REQUIRED)
 find_package(moonlight      REQUIRED)
 find_package(OpenSSL        REQUIRED)
-find_package(pugixml        REQUIRED)
 find_package(ZLIB           REQUIRED)
 
 include_directories(
@@ -22,7 +21,6 @@ include_directories(
     ${ENET_INCLUDE_DIRS}
     ${MOONLIGHT_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
-    ${PUGIXML_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
 )
 
@@ -33,7 +31,6 @@ list(APPEND DEPLIBS
     ${ENET_LIBRARIES}
     ${MOONLIGHT_LIBRARIES}
     ${OPENSSL_LIBRARIES}
-    ${PUGIXML_LIBRARIES}
     ${ZLIB_LIBRARIES}
 )
 
