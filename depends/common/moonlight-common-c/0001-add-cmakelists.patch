@@ -1,0 +1,65 @@
+commit 49b570407369e1520d03393e733d14abc1947e12
+Author: Lukas Rusak <lorusak@gmail.com>
+Date:   Thu Oct 27 00:09:07 2016 -0700
+
+    add CMakeLists.txt
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..7e92b67
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,45 @@
++project(moonlight)
++cmake_minimum_required(VERSION 2.8)
++
++find_package(OpenSSL REQUIRED)
++find_package(enet REQUIRED)
++
++set(MOONLIGHT_SOURCES
++    src/AudioStream.c
++    src/ByteBuffer.c
++    src/Connection.c
++    src/ControlStream.c
++    src/FakeCallbacks.c
++    src/InputStream.c
++    src/LinkedBlockingQueue.c
++    src/Misc.c
++    src/Platform.c
++    src/PlatformSockets.c
++    src/RtpReorderQueue.c
++    src/RtspConnection.c
++    src/RtspParser.c
++    src/SdpGenerator.c
++    src/VideoDepacketizer.c
++    src/VideoStream.c
++)
++
++
++include_directories(
++    ${OPENSSL_INCLUDE_DIRS}
++    ${ENET_INCLUDE_DIRS}
++)
++
++set(CMAKE_POSITION_INDEPENDENT_CODE ON)
++add_library(${PROJECT_NAME} STATIC ${MOONLIGHT_SOURCES})
++
++# Install the generated static library
++install(TARGETS ${PROJECT_NAME}
++        ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
++
++# Install the header
++install(FILES src/Limelight.h
++        DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
++
++# Install the moonlight-config.cmake script
++install(FILES cmake/moonlight-config.cmake
++        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/moonlight)
+diff --git a/cmake/moonlight-config.cmake b/cmake/moonlight-config.cmake
+new file mode 100644
+index 0000000..ec4c616
+--- /dev/null
++++ b/cmake/moonlight-config.cmake
+@@ -0,0 +1,2 @@
++find_path(MOONLIGHT_INCLUDE_DIRS include  HINTS "/usr/include")
++find_library(MOONLIGHT_LIBRARIES NAMES libmoonlight.a HINTS "/usr/lib")

@@ -1,0 +1,35 @@
+commit cc917c80445c4721cd70bda4da758f2e3e7bec85
+Author: Lukas Rusak <lorusak@gmail.com>
+Date:   Thu Oct 27 00:12:57 2016 -0700
+
+    add cmakelists.txt
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..db2a40b
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,16 @@
++project(pugixml)
++cmake_minimum_required(VERSION 2.8.9)
++
++add_library(${PROJECT_NAME} STATIC src/pugixml.cpp)
++
++set_property(TARGET ${PROJECT_NAME}
++             PROPERTY POSITION_INDEPENDENT_CODE ON)
++
++install(TARGETS ${PROJECT_NAME}
++        ARCHIVE DESTINATION lib)
++install(FILES src/pugixml.hpp src/pugiconfig.hpp
++        DESTINATION include)
++
++# Install the pugixml-config.cmake script
++install(FILES cmake/pugixml-config.cmake
++        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/pugixml)
+diff --git a/cmake/pugixml-config.cmake b/cmake/pugixml-config.cmake
+new file mode 100644
+index 0000000..f5dc290
+--- /dev/null
++++ b/cmake/pugixml-config.cmake
+@@ -0,0 +1 @@
++find_library(PUGIXML_LIBRARIES NAMES libpugixml.a HINTS "/usr/lib")

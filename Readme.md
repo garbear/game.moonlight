@@ -116,7 +116,7 @@ Moonlight is also required:
 ```shell
 git clone --recursive https://github.com/moonlight-stream/moonlight-common-c
 cd moonlight-common-c
-wget https://raw.githubusercontent.com/garbear/game.moonlight/master/depends/common/moonlight-common-c/CMakeLists.txt
+wget https://raw.githubusercontent.com/garbear/game.moonlight/master/depends/common/moonlight-common-c/0001-add-cmakelists.patch -O - | patch
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Debug \
@@ -132,7 +132,7 @@ Also for pugixml:
 wget https://github.com/zeux/pugixml/releases/download/v1.7/pugixml-1.7.tar.gz
 tar -xzvf pugixml-1.6.tar.gz
 cd pugixml-1.6
-wget https://raw.githubusercontent.com/garbear/game.moonlight/master/depends/common/pugixml/CMakeLists.txt
+wget https://raw.githubusercontent.com/garbear/game.moonlight/master/depends/common/pugixml/0001-add-cmakelists.patch -O - | patch
 mkdir build
 cd build
 cmake -DCMAKE_BUILD_TYPE=Debug \

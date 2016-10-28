@@ -1,14 +1,11 @@
-From 614f9638c3727515915d0d8f5965f8fb471fff13 Mon Sep 17 00:00:00 2001
-From: Garrett Brown <themagnificentmrb@gmail.com>
-Date: Thu, 27 Oct 2016 12:21:29 -0700
-Subject: [PATCH] [cmake] Add missing install scripts and set PIC to ON
+commit 6d981f348e9522a33184bc009682a87b05034f09
+Author: Lukas Rusak <lorusak@gmail.com>
+Date:   Thu Oct 27 00:05:11 2016 -0700
 
----
- CMakeLists.txt | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+    enet add install to CMakeLists.txt, add PIC
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 1fe2f1b..9593399 100644
+index 1fe2f1b..8f15260 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -52,6 +52,7 @@ endif()
@@ -19,7 +16,7 @@ index 1fe2f1b..9593399 100644
  add_library(enet STATIC
          callbacks.c
          compress.c
-@@ -63,3 +64,16 @@ add_library(enet STATIC
+@@ -63,3 +64,15 @@ add_library(enet STATIC
          unix.c
          win32.c
      )
@@ -32,10 +29,14 @@ index 1fe2f1b..9593399 100644
 +install(DIRECTORY include/enet
 +        DESTINATION ${CMAKE_INSTALL_PREFIX}/include)
 +
-+# Write the enet-config.cmake script
-+file(WRITE ${CMAKE_INSTALL_PREFIX}/${PROJECT_NAME}-config.cmake
-+     "set(ENET_LIBRARIES ${CMAKE_INSTALL_PREFIX}/lib/${CMAKE_STATIC_LIBRARY_PREFIX}${PROJECT_NAME}${CMAKE_STATIC_LIBRARY_SUFFIX})\n \
-+      set(ENET_INCLUDE_DIRS ${CMAKE_INSTALL_PREFIX}/include)")
--- 
-2.7.4
-
++# Install the enet-config.cmake script
++install(FILES cmake/enet-config.cmake
++        DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/enet)
+diff --git a/cmake/enet-config.cmake b/cmake/enet-config.cmake
+new file mode 100644
+index 0000000..c95f230
+--- /dev/null
++++ b/cmake/enet-config.cmake
+@@ -0,0 +1,2 @@
++find_path(ENET_INCLUDE_DIRS enet  HINTS "/usr/include")
++find_library(ENET_LIBRARIES NAMES libenet.a HINTS "/usr/lib")
