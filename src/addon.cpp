@@ -219,7 +219,7 @@ extern "C"
     return GAME_ERROR_FAILED;
   }
 
-  void UpdatePort(unsigned int port, bool connected, const game_controller* connected_controller)
+  void UpdatePort(int port, bool connected, const game_controller* connected_controller)
   {
   }
 
