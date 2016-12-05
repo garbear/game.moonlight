@@ -23,7 +23,7 @@
 #include "PairingManager.h"
 #include <sstream>
 #include <fstream>
-#include "pugixml.hpp"
+#include <tinyxml2.h>
 #include "http.h"
 #include "Limelight.h"
 #include <openssl/rand.h>
@@ -64,19 +64,19 @@ NvHTTP::~NvHTTP()
 
 std::string NvHTTP::getXmlString(std::string str, std::string tagname)
 {
-  pugi::xml_document doc;
-  pugi::xml_parse_result result = doc.load_buffer(str.c_str(), str.size(), pugi::parse_default, pugi::encoding_auto);
-  if (!result)
+  tinyxml2::XMLDocument doc;
+  tinyxml2::XMLError result = doc.Parse(str.c_str());
+  if (result != tinyxml2::XML_SUCCESS)
   {
     esyslog("Did not properly load xml\n");
     return "";
   }
 
-  pugi::xml_node node = doc.child("root").child(tagname.c_str());
+  tinyxml2::XMLText* node = doc.FirstChildElement("root")->FirstChildElement(tagname.c_str())->ToText();
   if (node)
   {
-    isyslog("%s found with value %s", tagname.c_str(), node.child_value());
-    return std::string(node.child_value());
+    isyslog("%s found with value %s", tagname.c_str(), node->Value());
+    return std::string(node->Value());
   }
 
   return "";
@@ -201,22 +201,21 @@ void MOONLIGHT::NvHTTP::initializeConfig(STREAM_CONFIGURATION* config)
 std::vector<NvApp> MOONLIGHT::NvHTTP::getAppList(std::string input)
 {
   std::vector<NvApp> appList;
-  pugi::xml_document doc;
-  pugi::xml_parse_result result = doc.load_buffer(input.c_str(), input.size(), pugi::parse_default,
-      pugi::encoding_auto);
-  if (!result)
+  tinyxml2::XMLDocument doc;
+  tinyxml2::XMLError result = doc.Parse(input.c_str());
+  if (result != tinyxml2::XML_SUCCESS)
   {
     esyslog("Did not properly load xml\n");
     return appList;
   }
 
-  pugi::xml_node node = doc.child("root").child("App");
-  for (; node; node = node.next_sibling())
+  tinyxml2::XMLElement* node = doc.FirstChildElement("root")->FirstChildElement("App");
+  for (; node; node = node->NextSiblingElement())
   {
-    isyslog("App Found: %s", node.child_value("AppTitle"));
-    std::string title = node.child_value("AppTitle");
-    std::string id = node.child_value("ID");
-    std::string running = node.child_value("IsRunning");
+    isyslog("App Found: %s", node->FirstChildElement("AppTitle")->Value());
+    std::string title = node->FirstChildElement("AppTitle")->Value();
+    std::string id = node->FirstChildElement("ID")->Value();
+    std::string running = node->FirstChildElement("IsRunning")->Value();
     NvApp app(title);
     app.setAppId(id);
     app.setIsRunning(running);

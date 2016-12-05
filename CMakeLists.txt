@@ -11,8 +11,14 @@ find_package(CURL           REQUIRED)  # FIXME depends
 find_package(enet           REQUIRED)
 find_package(moonlight      REQUIRED)
 find_package(OpenSSL        REQUIRED)
-find_package(pugixml        REQUIRED)
 find_package(ZLIB           REQUIRED)
+
+find_path(TINYXML2_INCLUDE_DIRS NAMES tinyxml2.h)
+find_library(TINYXML2_LIBRARIES NAMES libtinyxml2.a)
+
+if(NOT TINYXML2_LIBRARIES AND NOT TINYXML2_INCLUDE_DIRS)
+  message(FATAL_ERROR "tinxml2 not found")
+endif()
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/src
@@ -22,7 +28,7 @@ include_directories(
     ${ENET_INCLUDE_DIRS}
     ${MOONLIGHT_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
-    ${PUGIXML_INCLUDE_DIRS}
+    ${TINYXML2_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
 )
 
@@ -33,7 +39,7 @@ list(APPEND DEPLIBS
     ${MOONLIGHT_LIBRARIES}
     ${ENET_LIBRARIES}
     ${OPENSSL_LIBRARIES}
-    ${PUGIXML_LIBRARIES}
+    ${TINYXML2_LIBRARIES}
     ${ZLIB_LIBRARIES}
 )
 
